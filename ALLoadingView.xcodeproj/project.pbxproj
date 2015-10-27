@@ -13,6 +13,7 @@
 		AC2068C01BA58DD500F1C801 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC2068BF1BA58DD500F1C801 /* Images.xcassets */; };
 		AC2068C31BA58DD600F1C801 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC2068C11BA58DD600F1C801 /* LaunchScreen.xib */; };
 		AC2068CF1BA58DD700F1C801 /* ALLoadingViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2068CE1BA58DD700F1C801 /* ALLoadingViewTests.swift */; };
+		AC2068DA1BA58EAD00F1C801 /* ALLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2068D91BA58EAD00F1C801 /* ALLoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		AC2068C81BA58DD600F1C801 /* ALLoadingViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ALLoadingViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC2068CD1BA58DD700F1C801 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC2068CE1BA58DD700F1C801 /* ALLoadingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALLoadingViewTests.swift; sourceTree = "<group>"; };
+		AC2068D91BA58EAD00F1C801 /* ALLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ALLoadingView.swift; path = Class/ALLoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		AC2068B51BA58DD400F1C801 /* ALLoadingView */ = {
 			isa = PBXGroup;
 			children = (
+				AC2068D81BA58E7D00F1C801 /* Class */,
 				AC2068B81BA58DD400F1C801 /* AppDelegate.swift */,
 				AC2068BA1BA58DD400F1C801 /* ViewController.swift */,
 				AC2068BC1BA58DD500F1C801 /* Main.storyboard */,
@@ -110,6 +113,14 @@
 				AC2068CD1BA58DD700F1C801 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AC2068D81BA58E7D00F1C801 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				AC2068D91BA58EAD00F1C801 /* ALLoadingView.swift */,
+			);
+			name = Class;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,7 +167,9 @@
 		AC2068AB1BA58DD400F1C801 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftMigration = 0710;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = ALoginov;
 				TargetAttributes = {
 					AC2068B21BA58DD400F1C801 = {
@@ -213,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC2068BB1BA58DD400F1C801 /* ViewController.swift in Sources */,
+				AC2068DA1BA58EAD00F1C801 /* ALLoadingView.swift in Sources */,
 				AC2068B91BA58DD400F1C801 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +290,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -291,7 +306,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -329,7 +344,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -341,7 +356,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ALLoadingView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aloginov.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -351,7 +368,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ALLoadingView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aloginov.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -370,6 +389,7 @@
 				);
 				INFOPLIST_FILE = ALLoadingViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aloginov.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ALLoadingView.app/ALLoadingView";
 			};
@@ -385,6 +405,7 @@
 				);
 				INFOPLIST_FILE = ALLoadingViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aloginov.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ALLoadingView.app/ALLoadingView";
 			};
@@ -409,6 +430,7 @@
 				AC2068D41BA58DD700F1C801 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AC2068D51BA58DD700F1C801 /* Build configuration list for PBXNativeTarget "ALLoadingViewTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +439,7 @@
 				AC2068D71BA58DD700F1C801 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
