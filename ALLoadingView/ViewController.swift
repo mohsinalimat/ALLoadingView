@@ -24,28 +24,33 @@ class ViewController: UIViewController {
     }
 
     @IBAction func action_testCaseOne(sender: AnyObject) {
-        _ = NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: "stopTimer", userInfo: nil, repeats: false)
-        
-//        ALLoadingView.manager.showLoadingViewOfType(.Default)
-        ALLoadingView.manager.showLoadingViewOfType(.Default, windowMode: ALLVWindowMode.Fullsreen, completionBlock: nil)
+        ALLoadingView.manager.windowRatio = 0.5
+        ALLoadingView.manager.showLoadingViewOfType(.Message, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
+        ALLoadingView.manager.hideLoadingViewWithDelay(3.0)
     }
     
     @IBAction func action_testCaseTwo(sender: AnyObject) {
-        _ = NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: "stopTimer", userInfo: nil, repeats: false)
-        
-//        ALLoadingView.manager.showLoadingViewOfType(.BigActivityIndicator)
-        ALLoadingView.manager.showLoadingViewOfType(.Default, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
+        ALLoadingView.manager.bluredBackground = true
+        NSLog("Push")
+        ALLoadingView.manager.showLoadingViewOfType(.Default, windowMode: ALLVWindowMode.Fullsreen, completionBlock: nil)
+        ALLoadingView.manager.hideLoadingViewWithDelay(3.0)
+//        let justView = UIView(frame: self.view.bounds)
+//        justView.backgroundColor = .clearColor()
+//        let blurEffect = UIBlurEffect(style: .Light)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = justView.bounds
+//        view.addSubview(blurEffectView)
     }
     
     @IBAction func action_testCaseThree(sender: AnyObject) {
-        _ = NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: "stopTimer", userInfo: nil, repeats: false)
-        
-        ALLoadingView.manager.showLoadingViewOfType(.Message)
+        ALLoadingView.manager.bluredBackground = true
+        ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicatorAndCancelButton, windowMode: ALLVWindowMode.Fullsreen, completionBlock: nil)
+        ALLoadingView.manager.cancelCallback = {
+            ALLoadingView.manager.hideLoadingView()
+        }
     }
     
     @IBAction func action_testCaseFour(sender: AnyObject) {
-        NSTimer.scheduledTimerWithTimeInterval(6.0, target: self, selector: "stopTimer", userInfo: nil, repeats: false)
-        
         step = 0
         ALLoadingView.manager.showLoadingViewOfType(.Progress) {
             (finished) -> Void in
@@ -61,13 +66,6 @@ class ViewController: UIViewController {
         step++
         if step == steps.count {
             updateTimer.invalidate()
-        }
-    }
-    
-    func stopTimer() {
-        print("stopping", terminator: "")
-        ALLoadingView.manager.hideLoadingView { (finished) -> Void in
-            print("stopped", terminator: "")
         }
     }
 }
