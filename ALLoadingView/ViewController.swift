@@ -24,9 +24,42 @@ class ViewController: UIViewController {
     }
 
     @IBAction func action_testCaseOne(sender: AnyObject) {
-        ALLoadingView.manager.windowRatio = 0.5
-        ALLoadingView.manager.showLoadingViewOfType(.Message, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
-        ALLoadingView.manager.hideLoadingViewWithDelay(3.0)
+        if step == 0 {
+            print("View type: Default")
+            ALLoadingView.manager.windowRatio = 0.6
+            ALLoadingView.manager.showLoadingViewOfType(.Default, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
+            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+        }
+        
+        if step == 1 {
+            print("View type: Message")
+            ALLoadingView.manager.windowRatio = 0.6
+            ALLoadingView.manager.showLoadingViewOfType(.Message, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
+            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+        }
+        
+        if step == 2 {
+            print("View type: MessageWithIndicator")
+            ALLoadingView.manager.windowRatio = 0.6
+            ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicator, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
+            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+        }
+        
+        if step == 3 {
+            print("View type: MessageWithIndicatorAndCancelButton")
+            ALLoadingView.manager.windowRatio = 0.6
+            ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicatorAndCancelButton, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
+            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+        }
+        
+        if step == 4 {
+            step = -1
+            print("View type: Progress")
+            ALLoadingView.manager.windowRatio = 0.6
+            ALLoadingView.manager.showLoadingViewOfType(.Progress, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
+            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+        }
+        step++
     }
     
     @IBAction func action_testCaseTwo(sender: AnyObject) {

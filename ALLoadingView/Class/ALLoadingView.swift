@@ -54,7 +54,7 @@ class ALLoadingView: NSObject {
     //MARK: Adjusment
     var windowRatio: CGFloat = 0.4 {
         didSet {
-            windowRatio = min(max(0.2, windowRatio), 1.0)
+            windowRatio = min(max(0.3, windowRatio), 1.0)
         }
     }
     
@@ -79,13 +79,16 @@ class ALLoadingView: NSObject {
         }
     }
     private var frameForView: CGRect {
-        if loadingViewWindowMode == .Fullsreen {
+        if loadingViewWindowMode == .Fullsreen || windowRatio == 1.0 {
             return UIScreen.mainScreen().bounds
         } else {
             let bounds = UIScreen.mainScreen().bounds;
             let size = min(CGRectGetWidth(bounds), CGRectGetHeight(bounds))
             return CGRectMake(0, 0, size * windowRatio, size * windowRatio)
         }
+    }
+    private var isUsingBlurEffect: Bool {
+        return self.loadingViewWindowMode == .Fullsreen && self.bluredBackground
     }
     
     //MARK: - Initialization
@@ -124,37 +127,8 @@ class ALLoadingView: NSObject {
                 UIApplication.sharedApplication().windows[0].addSubview(self.loadingView)
                 self.loadingView.alpha = 0.0
                 
-                switch self.loadingViewType {
-                case .Message, .MessageWithIndicator:
-                    for view in self.loadingView.subviews {
-                        if view.respondsToSelector("setText:") {
-                            view.performSelectorOnMainThread("setText:", withObject: self.messageText, waitUntilDone: false)
-                        }
-                    }
-                    break
-                case .MessageWithIndicatorAndCancelButton:
-                    for view in self.loadingView.subviews {
-                        if view.respondsToSelector("setTitle:") {
-                            (view as! UIButton).setTitle("Cancel1", forState: .Normal)
-                        }
-                        if view.respondsToSelector("setText:") {
-                            view.performSelectorOnMainThread("setText:", withObject: self.messageText, waitUntilDone: false)
-                        }
-                    }
-                    break
-                case .Progress:
-                    for view in self.loadingView.subviews {
-                        if view.respondsToSelector("setProgress:") {
-                            (view as! UIProgressView).progress = 0.0
-                        }
-                        if view.respondsToSelector("setText:") {
-                            (view as! UILabel).text = self.messageText
-                        }
-                    }
-                    break
-                default:
-                    break
-                }
+                self.updateSubviewsTitles()
+                
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
                     self.loadingView.alpha = 1
                     }) { finished -> Void in
@@ -201,7 +175,7 @@ class ALLoadingView: NSObject {
         if self.loadingViewProgress != .Loaded { return }
         
         dispatch_async(dispatch_get_main_queue()) {
-            for view in self.loadingView.subviews {
+            for view in self.loadingViewSubviews() {
                 if view.respondsToSelector("setText:") {
                     view .performSelectorOnMainThread("setText:", withObject: message, waitUntilDone: false)
                 }
@@ -219,7 +193,7 @@ class ALLoadingView: NSObject {
         if self.loadingViewProgress != .Loaded { return }
         
         dispatch_async(dispatch_get_main_queue()) {
-            for view in self.loadingView.subviews {
+            for view in self.loadingViewSubviews() {
                 if view.respondsToSelector("setText:") {
                     view .performSelectorOnMainThread("setText:", withObject: message, waitUntilDone: false)
                 }
@@ -227,46 +201,64 @@ class ALLoadingView: NSObject {
         }
     }
     
+    func updateSubviewsTitles() {
+        let subviews: [UIView] = self.loadingViewSubviews()
+        
+        switch self.loadingViewType {
+        case .Message, .MessageWithIndicator:
+            for view in subviews {
+                if view.respondsToSelector("setText:") {
+                    view.performSelectorOnMainThread("setText:", withObject: self.messageText, waitUntilDone: false)
+                }
+            }
+            break
+        case .MessageWithIndicatorAndCancelButton:
+            for view in subviews {
+                if view.respondsToSelector("setTitle:") {
+                    (view as! UIButton).setTitle("Cancel1", forState: .Normal)
+                    (view as! UIButton).addTarget(self, action: "cancelButtonTapped:", forControlEvents: .TouchUpInside)
+                }
+                if view.respondsToSelector("setText:") {
+                    view.performSelectorOnMainThread("setText:", withObject: self.messageText, waitUntilDone: false)
+                }
+            }
+            break
+        case .Progress:
+            for view in subviews {
+                if view.respondsToSelector("setProgress:") {
+                    (view as! UIProgressView).progress = 0.0
+                }
+                if view.respondsToSelector("setText:") {
+                    (view as! UILabel).text = self.messageText
+                }
+            }
+            break
+        default:
+            break
+        }
+    }
+    
     //MARK: - Private methods
     //MARK: Initialize view
     private func initializeLoadingView() {
-        // create loading view
-        NSLog("Create")
         loadingView = UIView(frame: frameForView)
-        loadingView.center = CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetMidY(UIScreen.mainScreen().bounds))
-        loadingView.layer.cornerRadius = cornerRadius
-        if self.loadingViewWindowMode == .Fullsreen && self.bluredBackground {
-            
-            loadingView.backgroundColor = .clearColor()
-            NSLog("Background")
-            let greenView = UIView(frame: CGRect(x: 50, y: 50, width: 50, height: 50))
-            greenView.backgroundColor = .greenColor()
-            loadingView.addSubview(greenView)
-            
-//            let imageView = UIImageView(frame: loadingView.bounds)
-//            
-//            imageView.contentMode = .ScaleToFill
-//            loadingView.addSubview(imageView)
-//            loadingView.sendSubviewToBack(imageView)
-//            
-//            let layer = UIApplication.sharedApplication().keyWindow!.layer
-//            let scale = UIScreen.mainScreen().scale
-//            UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
-//            
-//            layer.renderInContext(UIGraphicsGetCurrentContext()!)
-//            let screenshot = UIGraphicsGetImageFromCurrentImageContext()
-//            UIGraphicsEndImageContext()
-//            NSLog("Image")
-//            let blurred = self.applyBlurEffect(screenshot)
-//            
-//            dispatch_async(dispatch_get_main_queue()) {
-//                imageView.image = blurred
-////                imageView.image = self.applyBlurEffect(screenshot)
-//            }
+        
+        if isUsingBlurEffect {
+            let lightBlur = UIBlurEffect(style: .Dark)
+            let lightBlurView = UIVisualEffectView(effect: lightBlur)
+            loadingView = lightBlurView
+            loadingView.frame = frameForView
         } else {
             loadingView.backgroundColor = backgroundColor
         }
+        loadingView.center = CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetMidY(UIScreen.mainScreen().bounds))
+        loadingView.layer.cornerRadius = cornerRadius
         
+        // View has been created. Add subviews according to selected type.
+        createSubviewsForLoadingView()
+    }
+    
+    private func createSubviewsForLoadingView() {
         // get list of views
         let viewTypes = specifySubviewTypes()
         
@@ -279,15 +271,7 @@ class ALLoadingView: NSObject {
             let frame: CGRect = CGRectMake(0, elementHeight * CGFloat(index), CGRectGetWidth(frameForView), elementHeight)
             let view = initializeViewWithType(type, andFrame: frame)
             
-            self.loadingView.addSubview(view)
-            self.loadingView.bringSubviewToFront(view)
-//            if bluredBackground {
-//                if let blurEffectView = self.loadingView.subviews.first as? UIVisualEffectView {
-//                    blurEffectView.contentView.addSubview(view)
-//                }
-//            } else {
-//                self.loadingView.addSubview(view)
-//            }
+            addSubviewToLoadingView(view)
         }
         
         // done
@@ -313,35 +297,35 @@ class ALLoadingView: NSObject {
         }
     }
     
-    private func initializeProgressLoadingView() {
-        self.loadingView = UIView(frame: UIScreen.mainScreen().bounds)
-        self.loadingView.backgroundColor = self.backgroundColor
-        let bounds = loadingView.bounds
-        
-        // Label
-        messageLabel.frame = CGRectMake(0, CGRectGetHeight(bounds)/2 - 75.0, CGRectGetWidth(bounds), 50.0)
-        messageLabel.textAlignment = .Center
-        messageLabel.textColor = textColor
-        messageLabel.font = messageFont
-        
-        // Progress view
-        progressBar.progressViewStyle = .Default
-        progressBar.frame.size = CGSizeMake(CGRectGetWidth(bounds) - 40, 10)
-        progressBar.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(messageLabel.frame) + 50.0)
-        
-        // Place on screen
-        self.loadingView.addSubview(messageLabel)
-        self.loadingView.addSubview(progressBar)
-
-        self.loadingViewProgress = .ViewReady
-    }
-    
     private func freeViewData() {
         // View is hidden, now free memory
-        for subview in self.loadingView.subviews {
+        for subview in loadingViewSubviews() {
             subview.removeFromSuperview()
         }
         self.loadingView = UIView(frame: CGRectZero);
+    }
+    
+    //MARK: Loading view accessors & methods
+    private func addSubviewToLoadingView(subview: UIView) {
+        if isUsingBlurEffect {
+            // Add subview to content view of UIVisualEffectView
+            if let asVisualEffectView = loadingView as? UIVisualEffectView {
+                asVisualEffectView.contentView.addSubview(subview)
+                asVisualEffectView.contentView.bringSubviewToFront(subview)
+            }
+        } else {
+            loadingView.addSubview(subview)
+            loadingView.bringSubviewToFront(subview)
+        }
+    }
+    
+    private func loadingViewSubviews() -> [UIView] {
+        if isUsingBlurEffect {
+            if let asVisualEffectView = loadingView as? UIVisualEffectView {
+                return asVisualEffectView.contentView.subviews
+            }
+        }
+        return loadingView.subviews
     }
     
     //MARK: Initializing subviews
@@ -378,10 +362,8 @@ class ALLoadingView: NSObject {
     private func view_cancelButton(frame: CGRect) -> UIButton {
         let button = UIButton(type: .Custom)
         button.frame = frame
-        button.setTitle("Cancel", forState: .Normal)
         button.setTitleColor(.whiteColor(), forState: .Normal)
         button.backgroundColor = .clearColor()
-        button.addTarget(self, action: "cancelButtonTapped:", forControlEvents: .TouchUpInside)
         return button
     }
     
@@ -390,14 +372,5 @@ class ALLoadingView: NSObject {
         if let _ = sender as? UIButton {
             cancelCallback?()
         }
-    }
-    
-    //MARK: Apply blur to image
-    func applyBlurEffect(image: UIImage) -> UIImage {
-        let imageToBlur = CIImage(image: image)
-        let blurfilter = CIFilter(name: "CIGaussianBlur")
-        blurfilter!.setValue(imageToBlur, forKey: "inputImage")
-        let resultImage = blurfilter!.valueForKey("outputImage") as! CIImage
-        return UIImage(CIImage: resultImage)
     }
 }
