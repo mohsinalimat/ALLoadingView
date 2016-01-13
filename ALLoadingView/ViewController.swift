@@ -25,47 +25,39 @@ class ViewController: UIViewController {
 
     @IBAction func action_testCaseOne(sender: AnyObject) {
         if step == 0 {
-            print("View type: Default")
+            print("Present")
             ALLoadingView.manager.windowRatio = 0.6
-            ALLoadingView.manager.showLoadingViewOfType(.Default, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
-            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+            ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicator, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
         }
         
         if step == 1 {
-            print("View type: Message")
-            ALLoadingView.manager.windowRatio = 0.6
-            ALLoadingView.manager.showLoadingViewOfType(.Message, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
-            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+            print("Update value 1")
+            ALLoadingView.manager.updateMessageLabelWithText("Shoo-shoo")
         }
         
         if step == 2 {
-            print("View type: MessageWithIndicator")
-            ALLoadingView.manager.windowRatio = 0.6
-            ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicator, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
-            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+            print("Update value 2")
+            ALLoadingView.manager.updateMessageLabelWithText("SHANA-shoo")
         }
         
         if step == 3 {
-            print("View type: MessageWithIndicatorAndCancelButton")
-            ALLoadingView.manager.windowRatio = 0.6
-            ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicatorAndCancelButton, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
-            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
+            print("Update value 3")
+            ALLoadingView.manager.updateMessageLabelWithText("AOSIJAOSJFLAKJS-shoo")
         }
         
         if step == 4 {
+            print("Close")
+            ALLoadingView.manager.hideLoadingView()
             step = -1
-            print("View type: Progress")
-            ALLoadingView.manager.windowRatio = 0.6
-            ALLoadingView.manager.showLoadingViewOfType(.Progress, windowMode: ALLVWindowMode.Windowed, completionBlock: nil)
-            ALLoadingView.manager.hideLoadingViewWithDelay(1.0)
         }
+        
         step++
     }
     
     @IBAction func action_testCaseTwo(sender: AnyObject) {
         ALLoadingView.manager.bluredBackground = true
         NSLog("Push")
-        ALLoadingView.manager.showLoadingViewOfType(.Default, windowMode: ALLVWindowMode.Fullsreen, completionBlock: nil)
+        ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicatorAndCancelButton, windowMode: ALLVWindowMode.Fullsreen, completionBlock: nil)
         ALLoadingView.manager.hideLoadingViewWithDelay(3.0)
 //        let justView = UIView(frame: self.view.bounds)
 //        justView.backgroundColor = .clearColor()
