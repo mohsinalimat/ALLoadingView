@@ -1,5 +1,5 @@
 # ALLoadingView
-Class for displaying pop-up views to notify users that some work is in progress. Written in Swift 2.0
+`ALLoadingView` is a class for displaying pop-up views to notify users that some work is in progress. Written in `Swift 2.0`
 
 ## Installation
 ### Manually
