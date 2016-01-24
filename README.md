@@ -26,7 +26,7 @@ Loading view manager class is a made as a singleton, so you can set different se
 
 - [GitHub](http://github.com/ALoginov)
 - [Twitter](http://twitter.com/ibvene)
-- [Email](artemloginov@dilarc.com)
+- [E-mail](artemloginov@dilarc.com)
 
 ## License
 
