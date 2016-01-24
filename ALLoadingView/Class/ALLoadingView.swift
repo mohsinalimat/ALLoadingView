@@ -43,7 +43,7 @@ private enum ALLVViewType {
 
 class ALLoadingView: NSObject {
     //MARK: - Public variables
-    var animationDuration: NSTimeInterval = 0.5
+    var animationDuration: NSTimeInterval = 1.5
     var cornerRadius: CGFloat = 0.0
     var cancelCallback: ALLVCancelBlock?
     var bluredBackground: Bool = false
@@ -123,28 +123,26 @@ class ALLoadingView: NSObject {
         let operationShow = NSBlockOperation { () -> Void in
             dispatch_async(dispatch_get_main_queue()) {
                 UIApplication.sharedApplication().windows[0].addSubview(self.loadingView)
-//                self.performSelectorOnMainThread("updateSubviewsTitles", withObject: nil, waitUntilDone: false)
                 self.updateSubviewsTitles()
-                
-                if self.isUsingBlurEffect {
-                    completionBlock?()
-                } else {
-                    self.loadingView.alpha = 0.0
-                    UIView.animateWithDuration(self.animationDuration, animations: { () -> Void in
-                        self.loadingView.alpha = 1
-                        }) { finished -> Void in
-                            if finished {
-                                self.loadingViewProgress = .Loaded
-                                completionBlock?()
-                            }
-                    }
-                }
+                self.animateLoadingViewAppearanceWithCompletionBlock(completionBlock)
             }
         }
         
         operationShow.addDependency(operationInit)
         operationQueue.maxConcurrentOperationCount = 1
         operationQueue.addOperations([operationInit, operationShow], waitUntilFinished: false)
+    }
+    
+    private func animateLoadingViewAppearanceWithCompletionBlock(completionBlock: ALLVCompletionBlock? = nil) {
+        self.updateContentViewAlphaValue(0.0)
+        UIView.animateWithDuration(self.animationDuration, animations: { () -> Void in
+            self.updateContentViewAlphaValue(1.0)
+            }) { finished -> Void in
+                if finished {
+                    self.loadingViewProgress = .Loaded
+                    completionBlock?()
+                }
+        }
     }
     
     //MARK: Hide loading view
@@ -157,6 +155,17 @@ class ALLoadingView: NSObject {
     func hideLoadingViewWithDelay(delay: NSTimeInterval, completionBlock: ALLVCompletionBlock? = nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
             self.loadingViewProgress = .Hiding
+            self.animateLoadingViewDisappearanceWithCompletionBlock(completionBlock)
+        }
+    }
+    
+    private func animateLoadingViewDisappearanceWithCompletionBlock(completionBlock: ALLVCompletionBlock? = nil) {
+        if isUsingBlurEffect {
+            self.loadingViewProgress = .Hidden
+            self.loadingView.removeFromSuperview()
+            completionBlock?()
+            self.freeViewData()
+        } else {
             UIView.animateWithDuration(self.animationDuration, animations: { () -> Void in
                 self.loadingView.alpha = 0.0
                 }) { finished -> Void in
@@ -178,10 +187,26 @@ class ALLoadingView: NSObject {
         self.loadingView = UIView(frame: CGRectZero);
     }
     
+    //MARK: Reset to defaults
+    func resetToDefaults() {
+        self.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+        self.textColor = UIColor(white: 1.0, alpha: 1.0)
+        self.messageFont = UIFont.systemFontOfSize(25.0)
+        self.bluredBackground = false
+        self.animationDuration = 0.5
+        self.messageText = "Loading"
+        self.cornerRadius = 0.0
+        self.windowRatio = 0.4
+        //
+        self.loadingViewWindowMode = .Fullsreen
+        self.loadingViewType = .Default
+    }
+    
     //MARK: Updating subviews data
     func updateProgressLoadingViewWithMessage(message: String, forProgress progress: Float) {
-        if self.loadingViewProgress != .Loaded { return }
-    
+        guard self.loadingViewProgress == .Loaded else {
+            return
+        }
         assert(loadingViewType == .Progress, "ALLoadingView Update Error. Set Progress type to access progress bar.")
         
         performSelectorOnMainThread("progress_updateProgressControlsWithData:", withObject: ["message": message, "progress" : progress], waitUntilDone: true)
@@ -196,7 +221,6 @@ class ALLoadingView: NSObject {
                 (view as! UILabel).text = message
             }
             if view.respondsToSelector("setProgress:") {
-                print("Set")
                 (view as! UIProgressView).progress = progress
             }
         }
@@ -251,14 +275,13 @@ class ALLoadingView: NSObject {
     //MARK: - Private methods
     //MARK: Initialize view
     func initializeLoadingView() {
-        loadingView = UIView(frame: frameForView)
-        
         if isUsingBlurEffect {
             let lightBlur = UIBlurEffect(style: .Dark)
             let lightBlurView = UIVisualEffectView(effect: lightBlur)
             loadingView = lightBlurView
             loadingView.frame = frameForView
         } else {
+            loadingView = UIView(frame: frameForView)
             loadingView.backgroundColor = backgroundColor
         }
         loadingView.center = CGPointMake(CGRectGetMidX(UIScreen.mainScreen().bounds), CGRectGetMidY(UIScreen.mainScreen().bounds))
@@ -269,14 +292,12 @@ class ALLoadingView: NSObject {
     }
     
     private func createSubviewsForLoadingView() {
-        // get list of views
         let viewTypes = getSubviewsTypes()
         
         // calculate frame for each view
         let viewsCount: Int = viewTypes.count
         let elementHeight: CGFloat = CGRectGetHeight(frameForView) / CGFloat(viewsCount)
         
-        // iterate
         for (index, type) in viewTypes.enumerate() {
             let frame: CGRect = CGRectMake(0, elementHeight * CGFloat(index), CGRectGetWidth(frameForView), elementHeight)
             let view = initializeViewWithType(type, andFrame: frame)
@@ -284,7 +305,6 @@ class ALLoadingView: NSObject {
             addSubviewToLoadingView(view)
         }
         
-        // done
         self.loadingViewProgress = .ViewReady
     }
     
@@ -328,6 +348,17 @@ class ALLoadingView: NSObject {
             }
         }
         return loadingView.subviews
+    }
+    
+    private func updateContentViewAlphaValue(alpha: CGFloat) {
+        if isUsingBlurEffect {
+            if let asVisualEffectView = loadingView as? UIVisualEffectView {
+                asVisualEffectView.contentView.alpha = alpha
+            }
+        } else {
+            print("Setting loading view alpha value to \(alpha)")
+            loadingView.alpha = alpha
+        }
     }
     
     //MARK: Initializing subviews
