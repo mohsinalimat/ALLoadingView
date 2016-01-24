@@ -1,0 +1,53 @@
+# ALLoadingView
+Class for displaying pop-up views to notify users that some work is in progress. Written in Swift 2.0
+
+## Installation
+### Manually
+* Drag the `ALLoadingView.swift` file into your project
+
+## Usage
+### Simple loading view with activity indicator 
+```swift
+ALLoadingView.manager.showLoadingViewOfType(.Default, windowMode: .Windowed, completionBlock: nil)
+ALLoadingView.manager.hideLoadingViewWithDelay(2.0)
+```
+### Loading view with blurred background and button to cancel
+```swift
+ALLoadingView.manager.bluredBackground = true
+ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicatorAndCancelButton, windowMode: .Fullsreen, completionBlock: nil)
+ALLoadingView.manager.cancelCallback = {
+  ALLoadingView.manager.hideLoadingView()
+}
+```
+### Resetting values to defaults
+Loading view manager class is a made as a singleton, so you can set different settings for loading view at various parts of your application. To drop settings, call `-resetToDefaults()`
+
+## Contact
+
+- [GitHub](http://github.com/ALoginov)
+- [Twitter](http://twitter.com/ibvene)
+- [Email](artemloginov@dilarc.com)
+
+## License
+
+### MIT License
+
+Copyright (c) 2015 Artem Loginov
+
+Permission is hereby granted,  free of charge,  to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to  use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
