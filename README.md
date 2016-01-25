@@ -20,7 +20,7 @@ ALLoadingView.manager.cancelCallback = {
 }
 ```
 ### Resetting values to defaults
-Loading view manager class is a made as a singleton, so you can set different settings for loading view at various parts of your application. To drop settings, call `-resetToDefaults()`
+Loading view manager class is made as a singleton, so you can set different settings for loading view at various parts of your application. To drop settings, call `-resetToDefaults()`
 
 ## Contact
 
