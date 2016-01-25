@@ -36,14 +36,14 @@ class ViewController: UIViewController {
     @IBAction func action_testCaseTwo(sender: AnyObject) {
         ALLoadingView.manager.resetToDefaults()
         ALLoadingView.manager.bluredBackground = true
-        ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicator, windowMode: ALLVWindowMode.Fullsreen, completionBlock: nil)
+        ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicator, windowMode: ALLVWindowMode.Fullscreen, completionBlock: nil)
         ALLoadingView.manager.hideLoadingViewWithDelay(2.0)
     }
     
     @IBAction func action_testCaseThree(sender: AnyObject) {
         ALLoadingView.manager.resetToDefaults()
         ALLoadingView.manager.bluredBackground = true
-        ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicatorAndCancelButton, windowMode: ALLVWindowMode.Fullsreen, completionBlock: nil)
+        ALLoadingView.manager.showLoadingViewOfType(.MessageWithIndicatorAndCancelButton, windowMode: ALLVWindowMode.Fullscreen, completionBlock: nil)
         ALLoadingView.manager.cancelCallback = {
             ALLoadingView.manager.hideLoadingView()
         }

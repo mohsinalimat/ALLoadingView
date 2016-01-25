@@ -34,7 +34,7 @@ enum ALLVType {
 }
 
 enum ALLVWindowMode {
-    case Fullsreen
+    case Fullscreen
     case Windowed
 }
 
@@ -80,7 +80,7 @@ class ALLoadingView: NSObject {
     //MARK: Custom setters/getters
     private var loadingViewWindowMode: ALLVWindowMode {
         didSet {
-            if loadingViewWindowMode == .Fullsreen {
+            if loadingViewWindowMode == .Fullscreen {
                 cornerRadius = 0.0
             } else  {
                 bluredBackground = false
@@ -91,7 +91,7 @@ class ALLoadingView: NSObject {
         }
     }
     private var frameForView: CGRect {
-        if loadingViewWindowMode == .Fullsreen || windowRatio == 1.0 {
+        if loadingViewWindowMode == .Fullscreen || windowRatio == 1.0 {
             return UIScreen.mainScreen().bounds
         } else {
             let bounds = UIScreen.mainScreen().bounds;
@@ -100,7 +100,7 @@ class ALLoadingView: NSObject {
         }
     }
     private var isUsingBlurEffect: Bool {
-        return self.loadingViewWindowMode == .Fullsreen && self.bluredBackground
+        return self.loadingViewWindowMode == .Fullscreen && self.bluredBackground
     }
     
     //MARK: - Initialization
@@ -112,7 +112,7 @@ class ALLoadingView: NSObject {
     }
     
     override init() {
-        loadingViewWindowMode = .Fullsreen
+        loadingViewWindowMode = .Fullscreen
         loadingViewProgress = .Hidden
         loadingViewType = .Default
     }
@@ -120,7 +120,7 @@ class ALLoadingView: NSObject {
     //MARK: - Public methods
     //MARK: Show loading view
     func showLoadingViewOfType(type: ALLVType, completionBlock: ALLVCompletionBlock?) {
-        showLoadingViewOfType(type, windowMode: .Fullsreen, completionBlock: completionBlock)
+        showLoadingViewOfType(type, windowMode: .Fullscreen, completionBlock: completionBlock)
     }
     
     func showLoadingViewOfType(type: ALLVType, windowMode: ALLVWindowMode, completionBlock: ALLVCompletionBlock? = nil) {
@@ -212,7 +212,7 @@ class ALLoadingView: NSObject {
         self.cornerRadius = 0.0
         self.windowRatio = 0.4
         //
-        self.loadingViewWindowMode = .Fullsreen
+        self.loadingViewWindowMode = .Fullscreen
         self.loadingViewType = .Default
     }
     
@@ -262,7 +262,7 @@ class ALLoadingView: NSObject {
         case .MessageWithIndicatorAndCancelButton:
             for view in subviews {
                 if view.respondsToSelector("setTitle:") {
-                    (view as! UIButton).setTitle("Cancel1", forState: .Normal)
+                    (view as! UIButton).setTitle("Cancel", forState: .Normal)
                     (view as! UIButton).addTarget(self, action: "cancelButtonTapped:", forControlEvents: .TouchUpInside)
                 }
                 if view.respondsToSelector("setText:") {
@@ -290,7 +290,7 @@ class ALLoadingView: NSObject {
     //MARK: Initialize view
     func initializeLoadingView() {
         if isUsingBlurEffect {
-            let lightBlur = UIBlurEffect(style: .Dark)
+            let lightBlur = UIBlurEffect(style: .Light)
             let lightBlurView = UIVisualEffectView(effect: lightBlur)
             loadingView = lightBlurView
             loadingView.frame = frameForView
@@ -329,7 +329,7 @@ class ALLoadingView: NSObject {
         case .Message:
             return [.MessageLabel]
         case .MessageWithIndicator:
-            return [.MessageLabel, .ActivityIndicator]
+            return [.BlankSpace, .MessageLabel, .ActivityIndicator, .BlankSpace]
         case .MessageWithIndicatorAndCancelButton:
             if self.loadingViewWindowMode == ALLVWindowMode.Windowed {
                 return [.MessageLabel, .ActivityIndicator, .CancelButton]

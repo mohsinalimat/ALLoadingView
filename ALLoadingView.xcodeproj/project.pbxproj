@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12417ED41C558A7700FBA1B7 /* ScreenshotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12417ED31C558A7700FBA1B7 /* ScreenshotsViewController.swift */; };
 		AC2068B91BA58DD400F1C801 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2068B81BA58DD400F1C801 /* AppDelegate.swift */; };
 		AC2068BB1BA58DD400F1C801 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2068BA1BA58DD400F1C801 /* ViewController.swift */; };
 		AC2068BE1BA58DD500F1C801 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC2068BC1BA58DD500F1C801 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		12417ED31C558A7700FBA1B7 /* ScreenshotsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotsViewController.swift; sourceTree = "<group>"; };
 		AC2068B31BA58DD400F1C801 /* ALLoadingView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ALLoadingView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC2068B71BA58DD400F1C801 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC2068B81BA58DD400F1C801 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				AC2068D81BA58E7D00F1C801 /* Class */,
 				AC2068B81BA58DD400F1C801 /* AppDelegate.swift */,
 				AC2068BA1BA58DD400F1C801 /* ViewController.swift */,
+				12417ED31C558A7700FBA1B7 /* ScreenshotsViewController.swift */,
 				AC2068BC1BA58DD500F1C801 /* Main.storyboard */,
 				AC2068BF1BA58DD500F1C801 /* Images.xcassets */,
 				AC2068C11BA58DD600F1C801 /* LaunchScreen.xib */,
@@ -227,6 +230,7 @@
 			files = (
 				AC2068BB1BA58DD400F1C801 /* ViewController.swift in Sources */,
 				AC2068DA1BA58EAD00F1C801 /* ALLoadingView.swift in Sources */,
+				12417ED41C558A7700FBA1B7 /* ScreenshotsViewController.swift in Sources */,
 				AC2068B91BA58DD400F1C801 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
